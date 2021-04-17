@@ -167,7 +167,7 @@ public class AppUI extends Covid19App{
             //Statistics include Oil Spread, Oil Cleanup, Boat status, speed, Load, battery
             g.setColor(Color.YELLOW);
             g.drawString("Total Infected before vaccination: "+Double.toString(PeopleGrid.getSpread()),10, 10);
-            g.drawString("Total Vaccinated: "+Double.toString(Vaccination.totalVaccinated),210, 10);
+            g.drawString("Total Vaccinated: "+Double.toString(Vaccination.totalVaccinated),310, 10);
             g.setColor(Color.white);
             g.drawString("Vaccine Details: ",10, 27);
             g.setColor(Color.YELLOW);
