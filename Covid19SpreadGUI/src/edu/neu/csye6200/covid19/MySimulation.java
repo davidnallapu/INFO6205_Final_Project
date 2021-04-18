@@ -5,7 +5,7 @@ package edu.neu.csye6200.covid19;
 import java.util.ArrayList;
 
 /**
- * NOTE: MySimulation is a Runnable class that starts a "thread". This parent "thread" in turn starts "threadBoat" and "threadOill".
+ * NOTE: MySimulation is a Runnable class that starts a "thread". This parent "thread" in turn starts "threadVaccination" and "threadInfection".
  * This is done to make the oil and boat movement completely independent. 
  */
 public class MySimulation implements Runnable{
@@ -15,20 +15,23 @@ public class MySimulation implements Runnable{
 	
 	//Initialising the three threads with parent thread
 	private Thread thread = null;
-	private Thread threadOil= null;
-	private Thread threadBoat= null;
+	private Thread threadInfection= null;
+	private Thread threadVaccination= null;
 	private long simDelay = 500L; // time adjustment to slow down the simulation loop
 	private boolean running = false; // set true if the simulation is running
 	
-	private PeopleGrid og = new PeopleGrid();// Instantiating an object of OceanGrid and ABARule
+	private PeopleGrid og = new PeopleGrid();// Instantiating an object of Grid and ABARule
 	private Vaccination abr = new Vaccination();
-	
-	
+
+	public void tester() {
+		setDone(true);
+	}
 	/**
 	 * Method to start simulation
 	 */
 	public void startSim() {
 		// Adding Observers to the canvas and South Panel objects.
+		
 		abr.addObserver(AppUI.canvas);
 		abr.addObserver(AppUI.sp);
 		
@@ -72,6 +75,7 @@ public class MySimulation implements Runnable{
 	
 	public void stopSim() {	
 		if (thread == null) return; // defensive coding in case the thread is null
+
 		setDone(true);
 	}
 	
@@ -82,8 +86,8 @@ public class MySimulation implements Runnable{
 	public void run() {
 		runSimLoop();
 		thread = null; // flag that the simulation thread is finished
-		threadBoat = null;
-		threadOil = null;
+		threadVaccination = null;
+		threadInfection = null;
 	}
 	
 	/**
@@ -114,16 +118,16 @@ public class MySimulation implements Runnable{
 	private void updateSim() {
 		Vaccination.done=true;
 		PeopleGrid.done=false;
-		if(threadOil == null && threadBoat == null) {
-			threadOil = new Thread(og);
-			threadBoat = new Thread(abr);
+		if(threadInfection == null && threadVaccination == null) {
+			threadInfection = new Thread(og);
+			threadVaccination = new Thread(abr);
 			//Setting initial conditions again if the STOP button was clicked
 			Vaccination.bt = new Vaccine("Cleaner", 0, 0, 90, "READY", 20, 0, 100, 0);
 
 		}
-		if(!threadOil.isAlive() && !threadBoat.isAlive()) {// Starts the two threads for Oil Spill and Boat movement
-			threadOil.start();
-			threadBoat.start();
+		if(!threadInfection.isAlive() && !threadVaccination.isAlive()) {// Starts the two threads for Oil Spill and Boat movement
+			threadInfection.start();
+			threadVaccination.start();
 		}
 		}
 	
@@ -140,6 +144,8 @@ public class MySimulation implements Runnable{
 		PeopleGrid.infectedPeople = new ArrayList < PeopleGrid > (); 
 		PeopleGrid.totalVirusParticles=10000;
 		Vaccination.flagLoop=1;
+		PeopleGrid.totalInfected=0;
+		Vaccination.totalVaccinated=0;
 		new MyCanvas();
 	}
 	

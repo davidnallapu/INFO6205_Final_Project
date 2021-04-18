@@ -6,22 +6,22 @@ NUID : 001530978
 
 package edu.neu.csye6200.covid19;
 
-class Vaccine {
+public class Vaccine {
 	//Declaring variables for Boat class
-	private String boatName, direction, status;
+	private String name, direction, status;
 	private int posX, posY,heading, batteryCapacity, totalOil,loadCapacity;
 	private double speed;
 	
-	Vaccine(String boatName, int posX,int posY,int heading, String status, double speed, int loadCapacity, int batteryCapacity , int totalOil){
-		setBoatName(boatName);
+	public Vaccine(String name, int posX,int posY,int heading, String status, double speed, int loadCapacity, int batteryCapacity , int totalOil){
+		setName(name);
 		setPosX(posX);
 		setPosY(posY);
 		setHeading(heading);
 		setStatus(status);
 		setSpeed(speed);
-		setLoadCapacity(loadCapacity);
-		setBatteryCapacity(batteryCapacity);
-		setTotalOil(totalOil);
+//		setLoadCapacity(loadCapacity);
+//		setBatteryCapacity(batteryCapacity);
+//		setTotalOil(totalOil);
 	}
 	
 	public String getDirection() {
@@ -40,12 +40,12 @@ class Vaccine {
 		}
 	
 	
-	public String getBoatName() {
-		return boatName;
+	public String getName() {
+		return name;
 	}
 
-	public void setBoatName(String boatName) {
-		this.boatName = boatName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getPosX() {
@@ -99,7 +99,7 @@ class Vaccine {
 
 	//Method to print formatted Boat Instance Details 
 	public String toFormattedString() {
-		String st = String.format("%1$7s %2$5d %3$6d %4$8s° %5$10s %6$18s %7$20s ", getBoatName(),getPosX(),getPosY(),getHeading(),getSpeed(),getLoadCapacity(),getBatteryCapacity() );
+		String st = String.format("%1$7s %2$5d %3$6d %4$8s° %5$10s %6$18s %7$20s ", getName(),getPosX(),getPosY(),getHeading(),getSpeed(),getLoadCapacity(),getBatteryCapacity() );
 		return st; 
 	}
 	public int getTotalOil() {

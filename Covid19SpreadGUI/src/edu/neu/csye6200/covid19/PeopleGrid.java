@@ -13,10 +13,10 @@ import java.util.Random;
  * Land Mass with Oil Spilled = -2(Total Oil decreased by 20)
  * This has been done to ease programming in the canvas class.
  */
-class PeopleGrid implements Runnable {
-    int R;
-    int C;
-    int infectionSpread;
+public class PeopleGrid implements Runnable {
+    public int R;
+    public int C;
+    public int infectionSpread;
     boolean vaccinated;
     public static boolean done = false;
     public static int totalVirusParticles = 80*400;
@@ -25,7 +25,7 @@ class PeopleGrid implements Runnable {
     /**
 	 * Default constructor 
 	 */
-    PeopleGrid() {
+    public PeopleGrid() {
 
     }
 
@@ -33,10 +33,10 @@ class PeopleGrid implements Runnable {
     /**
 	 * Parameterized constructor 
 	 */
-    PeopleGrid(int R, int C, int oilSpread) {
+    public PeopleGrid(int R, int C, int infectionSpread) {
         this.R = R;
         this.C = C;
-        this.infectionSpread = oilSpread;
+        this.infectionSpread = infectionSpread;
         this.vaccinated =false;
     }
 
@@ -104,17 +104,23 @@ class PeopleGrid implements Runnable {
 	 */
     public void updateGrid(PeopleGrid gb) {
     	int rfactor=-1;
+    
+    	
     	if(gridData[gb.R][gb.C].infectionSpread == 77) {//This is someone with a mask. Rfactor decresases due to mask to 3
-    		 rfactor = 3;
+    		 rfactor = 2;
     		
     	}
-    	else {
-    		 rfactor = 5;//This is someone without a mask. Rfactor increases due to mask to 5
+    	else if(gridData[gb.R][gb.C].infectionSpread == 80){
+    		 rfactor = 4;//This is someone without a mask. Rfactor increases due to mask to 5
     		 
     	}
-    	
+    	else {
+    		rfactor = 0; //This is someone quarantining. Rfactor is 0
+    	}
     		ArrayList<Integer> temp_list = new ArrayList<Integer>();
     		while(rfactor>0) {
+    			
+    			
     			Random rand = new Random(); 
     			int temp = rand.nextInt(8);
     			if(!temp_list.contains(temp)) {    				
@@ -196,7 +202,7 @@ class PeopleGrid implements Runnable {
 //    				{System.out.println("rfactor "+rfactor);
 //    				System.out.println("temp "+ temp);
 //    				System.out.println();}
-    				
+
     			
     			
     			
@@ -209,7 +215,7 @@ class PeopleGrid implements Runnable {
     /**
 	 * Method to return amount of oil that has spilled 
 	 */
-    public static double getSpread() {
+    public static int getSpread() {
         return totalInfected;
     }
 

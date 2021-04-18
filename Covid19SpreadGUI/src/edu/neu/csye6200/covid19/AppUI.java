@@ -34,7 +34,7 @@ public class AppUI extends Covid19App{
 	private JComboBox<String> comboBox;
 	public static MyCanvas canvas;
 	public static SouthPanel sp;
-	private MySimulation mySim = null;
+	public MySimulation mySim = null;
 	
 	/**
 	 * Constructor
