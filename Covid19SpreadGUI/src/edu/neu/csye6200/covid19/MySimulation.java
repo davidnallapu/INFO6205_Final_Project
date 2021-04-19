@@ -44,6 +44,7 @@ public class MySimulation implements Runnable{
 		running = true;
 		paused = false;
 		done = false; // reset the done flag.
+
 		thread.start();
 		
 	}
@@ -146,6 +147,8 @@ public class MySimulation implements Runnable{
 		Vaccination.flagLoop=1;
 		PeopleGrid.totalInfected=0;
 		Vaccination.totalVaccinated=0;
+//		MyCanvas.masked =  Integer.parseInt(AppUI.masked.getText());
+//		MyCanvas.quarantined =  Integer.parseInt(AppUI.quarantined.getText());
 		new MyCanvas();
 	}
 	

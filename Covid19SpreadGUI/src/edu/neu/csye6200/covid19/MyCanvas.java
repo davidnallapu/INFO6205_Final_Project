@@ -9,8 +9,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -22,6 +24,9 @@ public class MyCanvas extends JPanel implements Observer {
 	private PeopleGrid[][] grid;
 	private BufferedImage img;
 	private Vaccination myABRule;
+	public static int masked=5;
+	public static int quarantined=5;
+	
 
 	/**
 	 * Constructor to add Oil and Land Mass
@@ -39,20 +44,39 @@ public class MyCanvas extends JPanel implements Observer {
 		PeopleGrid.gridData[PeopleGrid.gridWidth / 2 - 1][PeopleGrid.gridHeight / 2 - 1].infectionSpread = 0;
 		PeopleGrid.totalVirusParticles -= 0;
 		PeopleGrid.infectedPeople.add(PeopleGrid.gridData[PeopleGrid.gridWidth / 2 - 1][PeopleGrid.gridHeight / 2 - 1]);
-
-		// Adding people who are quarantining 
-		PeopleGrid.gridData[5][8].infectionSpread = -1;
-		PeopleGrid.gridData[8][5].infectionSpread = -1;
-		PeopleGrid.gridData[12][3].infectionSpread = -1;
-		PeopleGrid.gridData[11][17].infectionSpread = -1;
-		PeopleGrid.gridData[16][11].infectionSpread = -1;
-		PeopleGrid.gridData[3][13].infectionSpread = -1;
-		PeopleGrid.gridData[17][12].infectionSpread = -1;
-		PeopleGrid.gridData[13][5].infectionSpread = -1;
+		
+		ArrayList<PeopleGrid> masked_quarantined_list = new ArrayList<>();
 		
 		//Adding people with masks
-		PeopleGrid.gridData[12][12].infectionSpread = -3;
-		PeopleGrid.gridData[13][3].infectionSpread = -3;
+		for(int i =0; i<Integer.parseInt(AppUI.masked.getText());i++) {
+			Random r = new Random();
+			int row= r.nextInt(20);
+			int col = r.nextInt(20);
+			if(!masked_quarantined_list.contains(PeopleGrid.gridData[row][col])) {
+			PeopleGrid.gridData[row][col].infectionSpread = -1;
+			masked_quarantined_list.add(PeopleGrid.gridData[row][col]);}
+		}
+		// Adding people who are quarantining 
+//		PeopleGrid.gridData[5][8].infectionSpread = -1;
+//		PeopleGrid.gridData[8][5].infectionSpread = -1;
+//		PeopleGrid.gridData[12][3].infectionSpread = -1;
+//		PeopleGrid.gridData[11][17].infectionSpread = -1;
+//		PeopleGrid.gridData[16][11].infectionSpread = -1;
+//		PeopleGrid.gridData[3][13].infectionSpread = -1;
+//		PeopleGrid.gridData[17][12].infectionSpread = -1;
+//		PeopleGrid.gridData[13][5].infectionSpread = -1;
+		
+		//Adding people q
+		for(int i =0; i<Integer.parseInt(AppUI.quarantined.getText());i++) {
+			Random r = new Random();
+			int row= r.nextInt(20);
+			int col = r.nextInt(20);
+			if(!masked_quarantined_list.contains(PeopleGrid.gridData[row][col])) {
+			PeopleGrid.gridData[row][col].infectionSpread = -3;
+			masked_quarantined_list.add(PeopleGrid.gridData[row][col]);}
+		}
+//		PeopleGrid.gridData[12][12].infectionSpread = -3;
+//		PeopleGrid.gridData[13][3].infectionSpread = -3;
 
 		grid = PeopleGrid.gridData;
 	}
@@ -70,13 +94,13 @@ public class MyCanvas extends JPanel implements Observer {
 		g2d.fillRect(0, 0, size.width, size.height);
 		int height = size.width / 20;
 		int width = size.height / 20;
-		drawOceanGrid(g2d, height, width);
+		drawPeopleGrid(g2d, height, width);
 	}
 
 	/**
-	 * Method to draw ocean grid.
+	 * Method to draw  grid.
 	 */
-	private void drawOceanGrid(Graphics2D g2d, int height, int width) {
+	private void drawPeopleGrid(Graphics2D g2d, int height, int width) {
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[0].length; j++) {
 				int startx = j * height;
@@ -112,7 +136,7 @@ public class MyCanvas extends JPanel implements Observer {
 					else if (grid[i][j].infectionSpread == -3) { // If person is wearing a mask
 						g2d.setColor(Color.BLACK);
 						g2d.fillRect(startx, i * width, height - 1, width - 1);
-						g2d.setColor(new Color(42, 167, 172));
+						g2d.setColor(Color.blue);
 						g2d.fillOval(startx, i * width, height - 1, width - 1);
 						
 					}

@@ -1,7 +1,12 @@
 
 
 package edu.neu.csye6200.covid19;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Observable;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class Vaccination extends Observable implements Runnable {
@@ -74,6 +79,30 @@ public class Vaccination extends Observable implements Runnable {
         PeopleGrid.gridData[newPosX][newPosY].vaccinated = true; //Marked as vaccinaated
         PeopleGrid.infectedPeople.remove(PeopleGrid.gridData[newPosX][newPosY]);     
         totalVaccinated+=1;
+        if(totalVaccinated==400) {
+        	try {
+        		
+        		
+        		
+        		JSONObject info = new JSONObject();
+        		info.put("population",400);
+        		info.put("rfactor",PeopleGrid.rfactor);
+        		info.put("totalInfected", PeopleGrid.totalInfected);
+        		info.put("quarantined", Integer.parseInt(AppUI.quarantined.getText()));
+        		info.put("masked", Integer.parseInt(AppUI.masked.getText()));
+        		
+        		JSONArray jsa = new JSONArray();
+        		jsa.put(info);
+        		jsa.put(PeopleGrid.jsonObject);
+                FileWriter file = new FileWriter("data/output.json");                
+                file.write(jsa.toString());
+                file.close();
+             } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+             }
+        	
+        }
         updateCanvas();//Updates the canvas for smooth movement of Boat. 
         timeSpeedDelay();
     }
@@ -83,7 +112,7 @@ public class Vaccination extends Observable implements Runnable {
 	 */
     public void timeSpeedDelay() {
         try {
-            Thread.sleep((int)(5000 / bt.getSpeed()));
+            Thread.sleep((int)(3000 / bt.getSpeed()));
         } catch (Exception e) {};
     }
 

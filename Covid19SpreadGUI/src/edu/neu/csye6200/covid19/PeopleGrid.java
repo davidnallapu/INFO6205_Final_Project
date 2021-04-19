@@ -2,8 +2,13 @@
 
 package edu.neu.csye6200.covid19;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+
 import java.util.Random;
+
+import org.json.JSONObject;
 
 /**
  * NOTE: I have fixed the amount of oil that spills to 10000. I'm Assuming the leaking pipe has
@@ -21,12 +26,15 @@ public class PeopleGrid implements Runnable {
     public static boolean done = false;
     public static int totalVirusParticles = 80*400;
     public static int totalInfected = 0;
+    public static int infected_ts =0;
+    public static int timeStep = 0;
+    public static JSONObject jsonObject = new JSONObject();
 
     /**
 	 * Default constructor 
 	 */
     public PeopleGrid() {
-
+    	//Creating a JSONObject object
     }
 
     
@@ -66,11 +74,16 @@ public class PeopleGrid implements Runnable {
 	 * Method with the logic to spread the virus
 	 */
     public void spreadInfection() {
-        if (done = false) return;
+        if (done = false) 
+        	{
+
+        	
+        	return;}
 
         if (totalVirusParticles <= 0) return;
-
+        
         for (PeopleGrid gb: infectedPeople) {
+        	
         	if(gb.vaccinated==false) {
             if (gb.infectionSpread == -3) {// Checks if a land mass and updates to -2 for graphics and decreases by 20
                 {gb.infectionSpread += 80;
@@ -92,7 +105,10 @@ public class PeopleGrid implements Runnable {
                     break;
                 }
             }
-        }}
+        }
+        	
+        	
+        	}
         try {
             Thread.sleep(100);
         } catch (Exception e) {};
@@ -102,25 +118,28 @@ public class PeopleGrid implements Runnable {
     /**
 	 * Method to update the Border Oil ArrayList and adding points for next iteration 
 	 */
+    public static int rfactor=4;//Covid default
     public void updateGrid(PeopleGrid gb) {
-    	int rfactor=-1;
-    
-    	
+//    	System.out.println("Time Step : "+timeStep+" Infected: "+infected_ts);
+    	System.out.println(rfactor);
+    	jsonObject.put(Integer.toString(timeStep),Integer.toString(infected_ts));
+        timeStep++;
+    	int rfactor_f = -1;
     	if(gridData[gb.R][gb.C].infectionSpread == 77) {//This is someone with a mask. Rfactor decresases due to mask to 3
-    		 rfactor = 2;
+    		rfactor_f = rfactor/2;
     		
     	}
     	else if(gridData[gb.R][gb.C].infectionSpread == 80){
-    		 rfactor = 4;//This is someone without a mask. Rfactor increases due to mask to 5
+    		rfactor_f = rfactor;//This is someone without a mask. Rfactor increases due to mask to 5
     		 
     	}
     	else {
-    		rfactor = 0; //This is someone quarantining. Rfactor is 0
+    		rfactor_f = 0; //This is someone quarantining. Rfactor is 0
     	}
     		ArrayList<Integer> temp_list = new ArrayList<Integer>();
-    		while(rfactor>0) {
-    			
-    			
+    		
+    		while(rfactor_f>0) {
+
     			Random rand = new Random(); 
     			int temp = rand.nextInt(8);
     			if(!temp_list.contains(temp)) {    				
@@ -131,7 +150,8 @@ public class PeopleGrid implements Runnable {
     						infectedPeople.add(gridData[gb.R][gb.C - 1]);
   
     			            temp_list.add(temp);
-    	    				rfactor--;
+    			            rfactor_f--;
+    			            infected_ts++;
     	    			
     					}
     				}
@@ -141,7 +161,8 @@ public class PeopleGrid implements Runnable {
     			            {infectedPeople.add(gridData[gb.R - 1][gb.C - 1]);
     			           
 	    			        temp_list.add(temp);
-		    				rfactor--;}
+	    			        rfactor_f--;
+	    			        infected_ts++;}
     			        
     					
     				}
@@ -151,7 +172,8 @@ public class PeopleGrid implements Runnable {
     			            {infectedPeople.add(gridData[gb.R - 1][gb.C]);
     			            
 	    					temp_list.add(temp);
-		    				rfactor--;}
+	    					rfactor_f--;
+	    					infected_ts++;}
     					
     				}
     				if(temp == 3) {
@@ -160,7 +182,8 @@ public class PeopleGrid implements Runnable {
     			            {infectedPeople.add(gridData[gb.R - 1][gb.C + 1]);
     			            
 	    			        temp_list.add(temp);
-		    				rfactor--;}
+	    			        rfactor_f--;
+	    			        infected_ts++;}
     					
     				}
     				if(temp == 4) {
@@ -169,7 +192,8 @@ public class PeopleGrid implements Runnable {
     			            {infectedPeople.add(gridData[gb.R][gb.C + 1]);
     			            
 	    			        temp_list.add(temp);
-		    				rfactor--;}
+	    			        rfactor_f--;
+	    			        infected_ts++;}
     					
     				}
     				if(temp == 5) {
@@ -178,7 +202,8 @@ public class PeopleGrid implements Runnable {
     			            {infectedPeople.add(gridData[gb.R + 1][gb.C + 1]);
     			            
 	    					temp_list.add(temp);
-		    				rfactor--;}
+	    					rfactor_f--;
+	    					infected_ts++;}
     					
     				}
     				if(temp == 6) {
@@ -187,7 +212,8 @@ public class PeopleGrid implements Runnable {
     			            {infectedPeople.add(gridData[gb.R + 1][gb.C]);
     			            
 	    			        temp_list.add(temp);
-		    				rfactor--;}
+	    			        rfactor_f--;
+	    			        infected_ts++;}
     					
     				}
     				if(temp == 7) {
@@ -196,7 +222,8 @@ public class PeopleGrid implements Runnable {
     			            {infectedPeople.add(gridData[gb.R + 1][gb.C - 1]);
     			            
 	    			        temp_list.add(temp);
-		    				rfactor--;}
+	    			        rfactor_f--;
+	    			        infected_ts++;}
     				}
 //    				if(gridData[gb.R][gb.C].infectionSpread == 77)
 //    				{System.out.println("rfactor "+rfactor);
@@ -213,7 +240,7 @@ public class PeopleGrid implements Runnable {
     }
 
     /**
-	 * Method to return amount of oil that has spilled 
+	 * Method to return amount of  that has spilled 
 	 */
     public static int getSpread() {
         return totalInfected;

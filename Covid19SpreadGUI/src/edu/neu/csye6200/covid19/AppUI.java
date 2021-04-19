@@ -18,6 +18,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import net.java.dev.designgridlayout.DesignGridLayout;
 
@@ -29,12 +30,14 @@ public class AppUI extends Covid19App{
 	private JButton startBtn;
 	private JButton stopBtn;
 	private JButton pauseBtn;
-	
+	public static JTextField quarantined;
+	public static JTextField masked;
 	
 	private JComboBox<String> comboBox;
 	public static MyCanvas canvas;
 	public static SouthPanel sp;
 	public MySimulation mySim = null;
+	
 	
 	/**
 	 * Constructor
@@ -43,7 +46,7 @@ public class AppUI extends Covid19App{
 		log.info("Simulation  started");
 		
 		frame.setSize(600,600);
-		frame.setTitle("Covid 19 Spread Simulaqtion");
+		frame.setTitle("Covid 19 Spread Simulation");
 		
 		
 		initSim(); // Initialize the simulation
@@ -57,6 +60,8 @@ public class AppUI extends Covid19App{
 	 * Initialise the simulation
 	 */
 	private void initSim() {
+		MyCanvas.masked = Integer.parseInt(AppUI.masked.getText());
+		MyCanvas.quarantined = Integer.parseInt(AppUI.quarantined.getText());
 		mySim = new MySimulation();
 	}
 
@@ -96,26 +101,41 @@ public class AppUI extends Covid19App{
 			}
 		});
 		
-//		comboBox = new JComboBox<String>();
-//		comboBox.addItem("Rule 1");
-//		comboBox.addItem("Rule 2");
-//		comboBox.addItem("Rule 3");
-//		
-//		comboBox.addActionListener(new ActionListener() {
-//		public void actionPerformed(ActionEvent e) {
-//			if(comboBox.getSelectedItem() == "Rule 1")
-//				Vaccination.boatRule=1;
-//			else if(comboBox.getSelectedItem() == "Rule 2") {
-//				Vaccination.boatRule=2;
-//			}
-//			else if(comboBox.getSelectedItem() == "Rule 3") {
-//				Vaccination.boatRule=3;
-//			}
-//		}
+		comboBox = new JComboBox<String>();
+		comboBox.addItem("Covid-19(R0 = 4)");
+		comboBox.addItem("SARS(R0 = 2)");
 		
-//	});
-//		pLayout.row().grid(new JLabel("Rule:")).add(comboBox);
-		pLayout.emptyRow();
+		comboBox.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(comboBox.getSelectedItem() == "Covid-19(R0 = 4)")
+			PeopleGrid.rfactor=4;
+			else if(comboBox.getSelectedItem() == "SARS(R0 = 2)") {
+				PeopleGrid.rfactor=2;
+			}
+		}
+	});
+		quarantined = new JTextField("5");
+		quarantined.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//				MyCanvas.quarantined =  Integer.parseInt(quarantined.getText());
+				MySimulation.done=true;
+				
+			}});
+		
+		masked = new JTextField("5");
+		masked.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//				MyCanvas.masked =  Integer.parseInt(masked.getText());
+				MySimulation.done=true;
+				
+			}});
+		
+		pLayout.row().grid(new JLabel("Rule:")).add(comboBox);
+		pLayout.row().grid(new JLabel("Quarantined:")).add(quarantined).grid(new JLabel("Masked:")).add(masked);
+
+		//		pLayout.emptyRow();
+//		pLayout.row().group(grid(new JLabel("Quarantined:")).add(quarantined));
+//		pLayout.row().grid(new JLabel("Masked:")).add(masked);
 		pLayout.row().center().add(startBtn, pauseBtn, stopBtn);
 		northPanel.setBorder(BorderFactory.createTitledBorder("Control Panel"));
 		northPanel.setBackground(new Color(76, 119, 153));
@@ -126,6 +146,7 @@ public class AppUI extends Covid19App{
 
 	@Override
 	public JPanel getCenterPanel() {
+		
 		canvas = new MyCanvas();
 		return canvas;
 	}
@@ -168,10 +189,28 @@ public class AppUI extends Covid19App{
             g.setColor(Color.YELLOW);
             g.drawString("Total Infected before vaccination: "+Double.toString(PeopleGrid.getSpread()),10, 10);
             g.drawString("Total Vaccinated: "+Double.toString(Vaccination.totalVaccinated),310, 10);
+            
+            g.setColor(Color.yellow);
+            g.drawString("Legend:",10, 27);
+            
             g.setColor(Color.white);
-            g.drawString("Vaccine Details: ",10, 27);
+            g.drawString("NOT INFECTED",80, 27);
+            
+            g.setColor(Color.red);
+            g.drawString("INFECTED: ",200, 27);
+            
+            g.setColor(Color.blue);
+            g.drawString("MASKED",280, 27);
+            
+            g.setColor(Color.orange);
+            g.drawString("QUARANTINED",360, 27);
+            
+            g.setColor(Color.green);
+            g.drawString("VACCINATED",480, 27);
+            
             g.setColor(Color.YELLOW);
             g.drawString("Status: "+Vaccination.bt.getStatus(),10, 45);
+
  
         }
         
