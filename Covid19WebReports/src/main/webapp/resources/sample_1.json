@@ -1,0 +1,21 @@
+{
+    "summary": [
+        {
+            "population": 400,
+            "r-value-1": 1
+        }],
+    
+    "data": [
+        {
+            "timestamp": "Sunday",
+            "value": 12111
+        }, 
+        {
+            "timestamp": "Monday",
+            "value": 141121212111
+        },
+        {
+            "timestamp": "Tuesday",
+            "value": 111
+        }]
+}
