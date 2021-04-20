@@ -81,22 +81,18 @@ public class Vaccination extends Observable implements Runnable {
         totalVaccinated+=1;
         if(totalVaccinated==400) {
         	try {
-        		
-        		
-        		
-        		JSONObject info = new JSONObject();
-        		info.put("population",400);
-        		info.put("rfactor",PeopleGrid.rfactor);
-        		info.put("totalInfected", PeopleGrid.totalInfected);
-        		info.put("quarantined", Integer.parseInt(AppUI.quarantined.getText()));
-        		info.put("masked", Integer.parseInt(AppUI.masked.getText()));
-        		
-        		JSONArray jsa = new JSONArray();
-        		jsa.put(info);
-        		jsa.put(PeopleGrid.jsonObject);
-                FileWriter file = new FileWriter("data/output.json");                
-                file.write(jsa.toString());
-                file.close();
+        		JSONObject json = new JSONObject();
+        		JSONObject summary = new JSONObject();
+        		summary.put("population",400);
+        		summary.put("rfactor",PeopleGrid.rfactor);
+        		summary.put("totalInfected", PeopleGrid.totalInfected);
+        		summary.put("quarantined", Integer.parseInt(AppUI.quarantined.getText()));
+        		summary.put("masked", Integer.parseInt(AppUI.masked.getText()));
+        		json.put("summary", summary);
+        		json.put("data", PeopleGrid.jsonArr);
+        		FileWriter file = new FileWriter("data/sars_3.json");                
+        		file.write(json.toString());
+        		file.close();
              } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

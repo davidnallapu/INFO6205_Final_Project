@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import java.util.Random;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -29,7 +30,7 @@ public class PeopleGrid implements Runnable {
     public static int infected_ts =0;
     public static int timeStep = 0;
     public static JSONObject jsonObject = new JSONObject();
-
+    public static JSONArray jsonArr = new JSONArray();
     /**
 	 * Default constructor 
 	 */
@@ -91,7 +92,7 @@ public class PeopleGrid implements Runnable {
                 if (gb.infectionSpread == 77) {
                     updateGrid(gb);
                     totalInfected+=1;
-                    infectedPeople.remove(gb);// Removes if oil Spread is 100%
+                    infectedPeople.remove(gb);// Removes if Spread is 100%
                     break;
                 }
                 }
@@ -122,7 +123,10 @@ public class PeopleGrid implements Runnable {
     public void updateGrid(PeopleGrid gb) {
 //    	System.out.println("Time Step : "+timeStep+" Infected: "+infected_ts);
     	System.out.println(rfactor);
-    	jsonObject.put(Integer.toString(timeStep),Integer.toString(infected_ts));
+    	JSONObject record = new JSONObject();
+    	record.put("time", Integer.toString(timeStep));
+    	record.put("value", Integer.toString(infected_ts));
+    	jsonArr.put(record);
         timeStep++;
     	int rfactor_f = -1;
     	if(gridData[gb.R][gb.C].infectionSpread == 77) {//This is someone with a mask. Rfactor decresases due to mask to 3
