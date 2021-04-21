@@ -143,7 +143,7 @@ public class MySimulation implements Runnable{
 		
 		//Setting initial conditions to RESTART the threads and Simulation
 		PeopleGrid.infectedPeople = new ArrayList < PeopleGrid > (); 
-		PeopleGrid.totalVirusParticles=10000;
+		PeopleGrid.totalVirusParticles=80*400;
 		Vaccination.flagLoop=1;
 		PeopleGrid.totalInfected=0;
 		Vaccination.totalVaccinated=0;

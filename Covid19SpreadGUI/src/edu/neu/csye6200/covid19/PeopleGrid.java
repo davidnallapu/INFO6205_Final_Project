@@ -77,7 +77,6 @@ public class PeopleGrid implements Runnable {
     public void spreadInfection() {
         if (done = false) 
         	{
-
         	
         	return;}
 
@@ -108,7 +107,6 @@ public class PeopleGrid implements Runnable {
             }
         }
         	
-        	
         	}
         try {
             Thread.sleep(100);
@@ -122,7 +120,7 @@ public class PeopleGrid implements Runnable {
     public static int rfactor=4;//Covid default
     public void updateGrid(PeopleGrid gb) {
 //    	System.out.println("Time Step : "+timeStep+" Infected: "+infected_ts);
-    	System.out.println(rfactor);
+//    	System.out.println(rfactor);
     	JSONObject record = new JSONObject();
     	record.put("time", Integer.toString(timeStep));
     	record.put("value", Integer.toString(infected_ts));
@@ -141,15 +139,15 @@ public class PeopleGrid implements Runnable {
     		rfactor_f = 0; //This is someone quarantining. Rfactor is 0
     	}
     		ArrayList<Integer> temp_list = new ArrayList<Integer>();
-    		
-    		while(rfactor_f>0) {
+    		System.out.println(rfactor_f);
+    		while(rfactor_f>0 && gridData[gb.R][gb.C].infectionSpread!=-3) {
 
     			Random rand = new Random(); 
     			int temp = rand.nextInt(8);
     			if(!temp_list.contains(temp)) {    				
     				if(temp == 0) {
     					//Check W and infectiousSpread=0 and not Quarantining
-    					if (gb.R <= gridHeight - 1 && gb.C - 1 <= gridWidth - 1 )
+    					if (gb.R <= gridHeight - 1 && gb.C - 1 <= gridWidth - 1)
     					{
     						infectedPeople.add(gridData[gb.R][gb.C - 1]);
   
