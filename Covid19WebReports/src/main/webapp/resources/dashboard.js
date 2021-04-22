@@ -1,7 +1,12 @@
 /* globals Chart:false, feather:false */
 
 
-function createChart(labels, data, ctx) {
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+var scatterPlot;
+$.ajaxSetup({headers: {"cache-control": "no-cache"}});
+
+function createChart(labels, data, ctx, datalabel, color) {
     'use strict'
 
     feather.replace();
@@ -11,51 +16,145 @@ function createChart(labels, data, ctx) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Sample Data',
-                data: data,
-                lineTension: 0,
+                    label: datalabel,
+                    data: data,
+                    lineTension: 0,
                     backgroundColor: 'transparent',
-                    borderColor: '#007bff',
-                    borderWidth: 4,
-                    pointBackgroundColor: '#007bff'
-            }]
-        },
+                    borderColor: color,
+                    borderWidth: 2,
+                    pointBackgroundColor: color
+                }]
+        }
     });
 
 }
 
-$.getJSON('resources/sample.json').done( function (results) {  
+function createScatterChart(locations, ctx, datalabel, color) {
+    'use strict'
+
+    feather.replace();
+
+    const data = {
+        datasets: [{
+                label: datalabel,
+                data: locations,
+                backgroundColor: 'rgb(255, 99, 132)'
+            }],
+    };
+
+    if (!scatterPlot) {
+
+        scatterPlot = new Chart(ctx,
+                {
+                    type: 'scatter',
+                    data: data,
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+    } else {
+        console.log(locations);
+        scatterPlot.data.datasets[0].data = locations;
+        scatterPlot.update();
+    }
+}
+
+function displayTable(labels, data, diff) {
+
+    var table = document.getElementById('rawdata');
+
+    for (var i = 0; i < data.length; i++) {
+
+        var row = table.insertRow();
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+
+        cell1.innerHTML = i + 1;
+        cell2.innerHTML = labels[i];
+        cell3.innerHTML = data[i];
+        cell4.innerHTML = diff[i];
+    }
+
+}
+
+
+$(document).ready(function () {
+    
+    
+    
+    var url = '';
+    if (!urlParams.get('model')) url = 'covid_1.json';
+    else url = urlParams.get('model')
+    
+    $.getJSON('resources/' + url, function (results) {
+
+        //console.log('resources/' + urlParams.get('model'));
 
         var labels = [];
         var data = [];
+        var diff = [];
 
         var labels = results.data.map(function (item) {
             return item.time;
         });
 
         var data = results.data.map(function (item) {
-            return item.number;
+            return item.value;
         });
+
+        for (var i = 1; i < data.length; i++) {
+            diff[i] = data[i] - data[i - 1];
+        }
+
+        var summary = document.getElementById('summarytable');
+
+        for (item in results.summary) {
+
+            var row = summary.insertRow();
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+
+            cell1.innerHTML = item;
+            cell2.innerHTML = results.summary[item];
+
+        }
+
 
         // Create chart
-        createChart(labels, data, document.getElementById('myChart'));
+        createChart(labels, data, document.getElementById('myChart'), 'Number of Infected people', '#007bff');
+        createChart(labels, diff, document.getElementById('myChart2'), 'Speed of the Spread', '#ff0000');
 
+        displayTable(labels, data, diff);
+
+    });
 });
 
-$.getJSON('resources/sample_1.json').done( function (results) {  
-
-        var labels = [];
-        var data = [];
-
-        var labels = results.data.map(function (item) {
-            return item.time;
-        });
-
-        var data = results.data.map(function (item) {
-            return item.number;
-        });
-
-        // Create chart
-        createChart(labels, data, document.getElementById('myChart1'));
-
-});
+//
+//var myVar = setInterval(updatePeopleChart, 1000);
+//
+//function updatePeopleChart() {
+//    $.ajaxSetup({ cache: false });
+//    $.ajax({
+//        cache: false,
+//        url: "data.json?step=5",
+//        dataType: "json",
+//        success: function (results) {
+//
+//            var locations = results.people.persons.map(function (p) {
+//                return p.location;
+//            });
+//
+//            console.log(locations);
+//            // Create chart
+//            createScatterChart(locations, document.getElementById('myScatterPlot'), 'Population', '#007bff');
+//        }});
+//
+//
+//}
