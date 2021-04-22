@@ -3,6 +3,8 @@
 package edu.neu.csye6200.covid19;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * NOTE: MySimulation is a Runnable class that starts a "thread". This parent "thread" in turn starts "threadVaccination" and "threadInfection".
@@ -46,6 +48,13 @@ public class MySimulation implements Runnable{
 		done = false; // reset the done flag.
 
 		thread.start();
+//		Timer t = new Timer();
+//		t.schedule(new TimerTask() {
+//		    @Override
+//		    public void run() {
+//		       PeopleGrid.addToJson();
+//		    }
+//		}, 0, 2500);
 		
 	}
 	
@@ -126,7 +135,7 @@ public class MySimulation implements Runnable{
 			Vaccination.bt = new Vaccine("Cleaner", 0, 0, 90, "READY", 20, 0, 100, 0);
 
 		}
-		if(!threadInfection.isAlive() && !threadVaccination.isAlive()) {// Starts the two threads for Oil Spill and Boat movement
+		if(!threadInfection.isAlive() && !threadVaccination.isAlive() && Vaccination.done==true && PeopleGrid.done==false) {// Starts the two threads for Oil Spill and Boat movement
 			threadInfection.start();
 			threadVaccination.start();
 		}
@@ -142,6 +151,7 @@ public class MySimulation implements Runnable{
 		PeopleGrid.done=true;
 		
 		//Setting initial conditions to RESTART the threads and Simulation
+		System.out.println("yayayay");
 		PeopleGrid.infectedPeople = new ArrayList < PeopleGrid > (); 
 		PeopleGrid.totalVirusParticles=80*400;
 		Vaccination.flagLoop=1;

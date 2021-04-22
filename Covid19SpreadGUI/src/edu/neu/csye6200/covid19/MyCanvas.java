@@ -48,12 +48,12 @@ public class MyCanvas extends JPanel implements Observer {
 		ArrayList<PeopleGrid> masked_quarantined_list = new ArrayList<>();
 		
 		//Adding people with masks
-		for(int i =0; i<Integer.parseInt(AppUI.masked.getText());i++) {
+		for(int i =0; i<100;i++) {
 			Random r = new Random();
-			int row= r.nextInt(20);
-			int col = r.nextInt(20);
+			int row= r.nextInt(50);
+			int col = r.nextInt(50);
 			if(!masked_quarantined_list.contains(PeopleGrid.gridData[row][col])) {
-			PeopleGrid.gridData[row][col].infectionSpread = -1;
+			PeopleGrid.gridData[row][col].infectionSpread = -3;
 			masked_quarantined_list.add(PeopleGrid.gridData[row][col]);}
 		}
 		// Adding people who are quarantining 
@@ -67,12 +67,12 @@ public class MyCanvas extends JPanel implements Observer {
 //		PeopleGrid.gridData[13][5].infectionSpread = -1;
 		
 		//Adding people q
-		for(int i =0; i<Integer.parseInt(AppUI.quarantined.getText());i++) {
+		for(int i =0; i<100;i+=2) {
 			Random r = new Random();
-			int row= r.nextInt(20);
-			int col = r.nextInt(20);
+			int row= r.nextInt(50);
+			int col = r.nextInt(50);
 			if(!masked_quarantined_list.contains(PeopleGrid.gridData[row][col])) {
-			PeopleGrid.gridData[row][col].infectionSpread = -3;
+			PeopleGrid.gridData[row][col].infectionSpread = -1;
 			masked_quarantined_list.add(PeopleGrid.gridData[row][col]);}
 		}
 //		PeopleGrid.gridData[12][12].infectionSpread = -3;
@@ -92,8 +92,8 @@ public class MyCanvas extends JPanel implements Observer {
 		Graphics2D g2d = (Graphics2D) g;
 		Dimension size = getSize();
 		g2d.fillRect(0, 0, size.width, size.height);
-		int height = size.width / 20;
-		int width = size.height / 20;
+		int height = size.width / 50;
+		int width = size.height / 50;
 		drawPeopleGrid(g2d, height, width);
 	}
 
@@ -143,7 +143,7 @@ public class MyCanvas extends JPanel implements Observer {
 					else if (grid[i][j].infectionSpread == 77) {//Someone with a mask getting infected
 						g2d.setColor(Color.RED);
 						g2d.fillRect(startx, i * width, height - 1, width - 1);
-						g2d.setColor(new Color(42, 167, 172));
+						g2d.setColor(Color.blue);
 						g2d.fillOval(startx, i * width, height - 1, width - 1);	
 					}
 					

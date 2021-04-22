@@ -74,12 +74,13 @@ public class Vaccination extends Observable implements Runnable {
 	 */
     public void clean(int newPosX, int newPosY) {
         bt.setStatus("VACCINATE");// Updates status  to VACCINATING. Displays on South Panel. 
-        bt.setTotalOil(bt.getTotalOil() + PeopleGrid.gridData[newPosX][newPosY].infectionSpread);//Updates the variable that tracks Vaccination
+//        bt.setTotalOil(bt.getTotalOil() + PeopleGrid.gridData[newPosX][newPosY].infectionSpread);//Updates the variable that tracks Vaccination
         PeopleGrid.gridData[newPosX][newPosY].infectionSpread = -10;//Vaccinates them
         PeopleGrid.gridData[newPosX][newPosY].vaccinated = true; //Marked as vaccinaated
-        PeopleGrid.infectedPeople.remove(PeopleGrid.gridData[newPosX][newPosY]);     
+//        PeopleGrid.infectedPeople.remove(PeopleGrid.gridData[newPosX][newPosY]);     
         totalVaccinated+=1;
-        if(totalVaccinated==400) {
+        
+        if(totalVaccinated==2500 ) {
         	try {
         		JSONObject json = new JSONObject();
         		JSONObject summary = new JSONObject();
@@ -90,9 +91,11 @@ public class Vaccination extends Observable implements Runnable {
         		summary.put("masked", Integer.parseInt(AppUI.masked.getText()));
         		json.put("summary", summary);
         		json.put("data", PeopleGrid.jsonArr);
-        		FileWriter file = new FileWriter("data/sars_3.json");                
+        		FileWriter file = new FileWriter("data/sars_2.json");                
         		file.write(json.toString());
         		file.close();
+        		Vaccination.done=false;
+        		PeopleGrid.done=true;
              } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -108,7 +111,7 @@ public class Vaccination extends Observable implements Runnable {
 	 */
     public void timeSpeedDelay() {
         try {
-            Thread.sleep((int)(3000 / bt.getSpeed()));
+            Thread.sleep((int)(100 / bt.getSpeed()));
         } catch (Exception e) {};
     }
 
