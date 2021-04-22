@@ -16,7 +16,7 @@ To test:
 2. Install Java
 3. Run edu.neu.csye6200.covid19_test as Junit 
 
-<img src="gui_screenshot.png" alt="Logo">
+<img src="gui_screenshot.png">
 <br>
 
 
