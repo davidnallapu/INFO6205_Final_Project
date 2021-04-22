@@ -48,10 +48,10 @@ public class MyCanvas extends JPanel implements Observer {
 		ArrayList<PeopleGrid> masked_quarantined_list = new ArrayList<>();
 		
 		//Adding people with masks
-		for(int i =0; i<100;i++) {
+		for(int i =0; i<Integer.parseInt(AppUI.masked.getText());i++) {
 			Random r = new Random();
-			int row= r.nextInt(50);
-			int col = r.nextInt(50);
+			int row= r.nextInt(20);
+			int col = r.nextInt(20);
 			if(!masked_quarantined_list.contains(PeopleGrid.gridData[row][col])) {
 			PeopleGrid.gridData[row][col].infectionSpread = -3;
 			masked_quarantined_list.add(PeopleGrid.gridData[row][col]);}
@@ -67,10 +67,10 @@ public class MyCanvas extends JPanel implements Observer {
 //		PeopleGrid.gridData[13][5].infectionSpread = -1;
 		
 		//Adding people q
-		for(int i =0; i<100;i+=2) {
+		for(int i =0; i<Integer.parseInt(AppUI.quarantined.getText());i+=2) {
 			Random r = new Random();
-			int row= r.nextInt(50);
-			int col = r.nextInt(50);
+			int row= r.nextInt(20);
+			int col = r.nextInt(20);
 			if(!masked_quarantined_list.contains(PeopleGrid.gridData[row][col])) {
 			PeopleGrid.gridData[row][col].infectionSpread = -1;
 			masked_quarantined_list.add(PeopleGrid.gridData[row][col]);}
