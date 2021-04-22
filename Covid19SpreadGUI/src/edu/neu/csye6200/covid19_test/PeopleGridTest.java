@@ -43,29 +43,6 @@ public class PeopleGridTest {
 		
 	}
 	
-	
-	@Test
-    public void testGetSpread() {
-		PeopleGrid g = new PeopleGrid();
-		
-		
-		PeopleGrid pg1 = new PeopleGrid();
-		pg1.R =12;
-		pg1.C = 12;
-		
-		g.gridData[pg1.R][pg1.C].infectionSpread = 80; 
-		
-		g.updateGrid(pg1);
-		
-		PeopleGrid pg_q = new PeopleGrid();
-		pg_q.R =13;
-		pg_q.C = 13;
-		
-		g.gridData[pg_q.R][pg_q.C].infectionSpread = -1; //Quarantining.
-		g.updateGrid(pg_q);
-		g.spreadInfection();
-		
-		assertEquals(g.getSpread(),1);//Only 1 as the pg_q is quarantining.
-}
+
 	
 }
