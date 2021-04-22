@@ -1,7 +1,7 @@
 # COVID-19 Spread Simulation INFO 6205 Team 12(Archil Lelashvili, David Nallapu)
 
 Video Presenation : 
-OneDrive : https://northeastern-my.sharepoint.com/:v:/r/personal/nallapu_d_northeastern_edu/Documents/presentation.mp4?csf=1&web=1&e=lHUW1C
+OneDrive : <a>https://northeastern-my.sharepoint.com/:v:/r/personal/nallapu_d_northeastern_edu/Documents/presentation.mp4?csf=1&web=1&e=lHUW1C</a>
 
 <!-- GETTING STARTED -->
 ## Getting Started
