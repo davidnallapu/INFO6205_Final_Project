@@ -3,7 +3,7 @@
 Video Presenation : 
 OneDrive : <a>https://northeastern-my.sharepoint.com/:v:/r/personal/nallapu_d_northeastern_edu/Documents/presentation.mp4?csf=1&web=1&e=lHUW1C</a>
 
-IF ONEDRIVE DOESN"T WORK : 
+IF ONEDRIVE DOESN'T WORK : 
 1. Download video from https://github.com/davidnallapu/INFO6205_Final_Project_Team_12/blob/main/presentation.mp4
 
 <!-- GETTING STARTED -->
